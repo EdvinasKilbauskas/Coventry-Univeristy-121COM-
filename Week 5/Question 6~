@@ -1,0 +1,9 @@
+fastPower(n,p):
+
+	if(p == 0):
+		return 1;
+	if(p > 0):
+		fastPower(n*n,p-1)
+
+	
+	
