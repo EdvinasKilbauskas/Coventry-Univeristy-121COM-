@@ -18,10 +18,10 @@ def power(n,p):
 	if(p == 0):
 		return 1
 	else:
-		return n*fastPower(n,p-1)
+		return n*power(n,p-1)
 		
 
-n = 2
-p = 10
-print("power(" + str(n) + "," + str(p) + ") = " + str(power(n,p)) + " (called " + str(fastPowerCount) + " times)")
-print("fastPower(" + str(n) + "," + str(p) + ") = " + str(fastPower(n,p)) + " (called " + str(powerCount) + " times)")
+n = 5
+p = 3
+print("power(" + str(n) + "," + str(p) + ") = " + str(power(n,p)) + " (called " + str(powerCount) + " times)")
+print("fastPower(" + str(n) + "," + str(p) + ") = " + str(fastPower(n,p)) + " (called " + str(fastPowerCount) + " times)")
