@@ -10,32 +10,37 @@ def getDictKey(word):
 	t = tuple(l)
 	return t
 
-""" read file from words when each word is seperated with newline ('\n') char """
+""" read file with words when each word is seperated by a newline ('\n') character """
 def readWordsFromFile(filename):
 	file = open(filename, 'r')
 	data = file.read()
 	return data.rsplit('\n')
 	
-words = readWordsFromFile("words.txt")
-
-dic = {"":[]}
-
-for word in words:
-	t = getDictKey(word)
-	if(t in dic):
-		dic[t].append(word)
-	else:
-		dic[t] = [word]
-		
-
-length = 0
-longestKey = ()
-for key in dic.keys():
-	if(len(key) == 8):
-		if(len(dic[key]) > length):
-			length = len(dic[key])
-			longestKey = key
+""" creates a dictionary with anagrams """
+def createAnagramDictionary(words):
+	dic = {"":[]}
+	for word in words:
+		key = getDictKey(word)
+		if(key in dic):
+			dic[key].append(word)
+		else:
+			dic[key] = [word]
 	
-print(dic[longestKey])
+	return dic
+	
+""" returns a list of words which you can make using N amount of letters """
+def findLongestListOfAnagrams(dic, n):
+	length = 0
+	longestKey = ()
+	for key in dic.keys():
+		if(len(key) == n):
+			if(len(dic[key]) > length):
+				length = len(dic[key])
+				longestKey = key
+	return dic[longestKey]
+	
+words = readWordsFromFile("words.txt")
+dic = createAnagramDictionary(words)
+longestList = findLongestListOfAnagrams(dic,8)
 
-
+print(longestList)
