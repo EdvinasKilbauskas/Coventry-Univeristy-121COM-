@@ -7,13 +7,10 @@ class Fraction:
 			raise TypeError("Denominator must be an integer")
 		if(d == 0):
 			raise RuntimeError("Denominator musn't be zero")
-		
 		if(d < 0):
 			n = -n
-			
 		self.n = n
 		self.d = d
-		
 		self.simplify()
 		
 	def __str__(self):
@@ -45,26 +42,35 @@ class Fraction:
 		else:
 			return False
 			
+	# used to calculate primes for simplification
+	def sieveOfEratotosthenes(n):
+		numbers = list(range(2,n))
+		primes = list()
+		
+		while(True):
+			if(len(numbers) == 0):
+				break
+			prime = numbers[0]
+			primes.append(prime)
+			# remove multiples of the prime
+			x = prime
+			while(x <= n):
+				if(x in numbers):
+					numbers.remove(x)
+				x += prime
+			
+		return primes
+			
 	def simplify(self):
+		primes = Fraction.sieveOfEratotosthenes(max(self.n,self.d))
 		newN = self.n
 		newD = self.d
 		while(True):
-			if(newN % 2 == 0 and newD % 2 == 0):
-				newN = newN / 2
-				newD = newD / 2
-				continue
-			if(newN % 3 == 0 and newD % 3 == 0):
-				newN = newN / 3
-				newD = newD / 3
-				continue
-			if(newN % 5 == 0 and newD % 5 == 0):
-				newN = newN / 5
-				newD = newD / 5
-				continue
-			if(newN % 7 == 0 and newD % 7 == 0):
-				newN = newN / 7
-				newD = newD / 7
-				continue
+			for p in primes:
+				if(newN % p == 0 and newD % p == 0):
+					newN = newN / p
+					newD = newD / p
+					continue
 			break
 		
 		self.n = int(newN)
@@ -83,4 +89,3 @@ print(str(a) + " + " + str(b) + " = " + str(a+b))
 print(str(a) + " - " + str(b) + " = " + str(a-b))
 print(str(a) + " * " + str(b) + " = " + str(a*b))
 print(str(a) + " / " + str(b) + " = " + str(a/b))
-
