@@ -1,0 +1,85 @@
+import sys
+from random import random
+
+""" Prints an error message to standart error stream """
+def printError(message):
+    sys.stderr.write("Error: " + message)
+    
+""" Removes characters from a string """
+def removeChars(string, toRemove):
+	for c in toRemove:
+		if(c in string):
+			string = string.replace(c,'')
+			
+	return string
+	
+""" Reads a file and returns its contents as a string
+    Return None if exception is caught """
+def readFile(filename, n = -1):
+	try:
+		f = open(filename, 'r')
+	except FileNotFoundError:
+		printError("file couldn't be located")
+		return None
+	except:
+		printError("uknown error")
+	finally:
+		if(n != -1):
+			contents = f.read(n)
+		else:
+			contents = f.read()
+		f.close()
+		return contents
+
+""" Creates a list of words contained in the given string """
+def getWords(string, length = -1):
+	tokens = string.rsplit(' ')
+	for token in tokens:
+		if(length != -1 and tokens.index(token) == length):
+				break
+				
+		#word = removeChars(token,"\"/\\\n@#$%^&*{}[]<>,~`;-1234567890")
+		word = removeChars(token,"\n-#1234567890")
+		tokens[tokens.index(token)] = word.lower()
+
+	return tokens
+    
+""" Splits a string into a list of words. A word is considered as a
+    piece of text which was seperated by spaces """
+def createAWordDictiniory(words):
+    dic = {str():list()}
+    count = len(words)
+    for i in range(0,count-2):
+        word = words[i]
+        following = words[i+1]
+        if(word not in dic):
+            dic[word] = [following]
+        else:
+            dic[word].append(following)
+
+    return dic
+        
+def getRandomSentence(dic, startWord):
+	word = startWord
+	sentence = str()
+	while(True):
+		sentence += word + " "
+		last = len(word) - 1
+		if(last >= 0 and (word[last] == '.' or word[last] == '?' or word[last] == '!')):
+			break;
+				
+		followingWords = dic[word]
+		if(len(followingWords) != 0):
+			word = followingWords[int(random()*(len(followingWords)-1))]
+			
+	return sentence
+    
+oliverText = readFile("OliverTwist.txt",99999)
+words = getWords(oliverText)
+dic = createAWordDictiniory(words)
+
+while(True):
+	word = str(input("Get a word to begin with: " ))
+
+	sentence = getRandomSentence(dic, word)
+	print(sentence)
