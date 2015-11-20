@@ -65,13 +65,15 @@ class Fraction:
 		newN = self.n
 		newD = self.d
 		while(True):
+			repeat = False
 			for p in primes:
 				if(newN % p == 0 and newD % p == 0):
 					newN = newN / p
 					newD = newD / p
-					continue
-			break
-		
+					repeat = True
+					
+			if(repeat == False):
+				break
 		self.n = int(newN)
 		self.d = int(newD)
 		
